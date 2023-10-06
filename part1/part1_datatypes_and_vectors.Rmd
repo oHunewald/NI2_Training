@@ -1,0 +1,445 @@
+# Coding warm-up
+
+### Data-types and -structures
+
+#### Primitive Data types
+
+```{r}
+# Numeric (Float)
+1
+1.0
+# Integer
+1L
+# String
+"Hello World"
+# Boolean (Logical)
+TRUE
+FALSE
+# Factor
+factor("A")
+```
+
+### Data Structures
+
+#### Composite Data-Types in R
+
+-   Vectors
+
+-   Lists
+
+-   matrix
+
+-   array
+
+-   data frame
+
+-   factors (list of factor)
+
+```{r}
+
+c(1,2,3)
+```
+
+```{r}
+list("a", "b", 1)
+```
+
+### Assignment
+
+```{r}
+x <- 1
+y <- 1.0
+
+```
+
+### Expression
+
+In programming, an expression is a combination of one or more values, variables, operators, and function calls that, when evaluated, results in a single value. Expressions are fundamental building blocks in computer programming and are used to perform various tasks, such as calculations, comparisons, and data manipulation.
+
+**Arithmetic Expression:**
+
+```{r}
+x <- 10
+y <- 5
+
+x + y  # Evaluating this expression adds the values of x and y.
+
+```
+
+**Logical Expression (Comparison):**
+
+```{r}
+a <- TRUE
+b <- FALSE
+
+logical_result <- a | b  # This expression performs a logical OR operation.
+
+print(logical_result)
+```
+
+```{r}
+
+a == b
+```
+
+```{r}
+class(x)
+class(a)
+```
+
+```{r}
+1:10
+```
+
+```{r}
+class(1:10)
+```
+
+```{r}
+# Creating strings
+str1 <- 'Hello, World!'
+str2 <- "R Programming"
+
+cat(str1, str2)
+```
+
+```{r}
+greeting <- paste(str1, str2)
+
+greeting
+```
+
+```{r}
+greeting2 <- paste0(str1, "-" ,str2)
+
+greeting2
+```
+
+# Boolean Logic
+
+```{r}
+# Equality
+x <- 5
+y <- 7
+
+result <- x == y
+
+result
+```
+
+```{r}
+# Inequality
+result <- x != y
+
+result
+```
+
+```{r}
+# Greater than
+result <- x > y
+
+result
+```
+
+```{r}
+# Less than or equal to
+result <- x <= y
+
+result
+```
+
+```{r}
+# Boolean logic expression
+x <- 10
+y <- 5
+z <- 3
+
+result <- (x > y & y > z) | (x == y & !(y == z))
+
+result
+```
+
+# Vectors
+
+Vectors are one of the fundamental data-structures in R and many other languages.
+
+Most of the following extensive list of operations is also applicable to matrices, lists and data frames
+
+```{r}
+# A vector of strings:
+x <- c("Alfa", "Bravo", "Charlie")
+x
+# A vector of numbers:
+x <- c(1, 2, 3)
+x
+```
+
+## Indexing a Vector
+
+```{r}
+x <- c('Alfa', 'Bravo', 'Charlie', 'Delta')
+
+x[2]
+```
+
+get the elements 2 to 4
+
+```{r}
+x[2:4]
+```
+
+get specific elements
+
+```{r}
+x[c(1,3)]
+```
+
+using sample to retrieve random numbers between 50 and 100
+
+```{r}
+set.seed(42)
+
+x <- sample(50:100, 10)
+
+x
+```
+
+checking all elements smaller 70, returns a Boolean vector of the same length (for each element of x)
+
+```{r}
+smaller_70 <- x < 70
+
+smaller_70
+```
+
+this Boolean vector can be used for sub.setting x
+
+```{r}
+x[smaller_70]
+```
+
+we can combine both operations into one:
+
+```{r}
+y <- x[ x < 70 ]
+
+y
+```
+
+how many values are below 70? Using the length function:
+
+```{r}
+length(y)
+```
+
+### Overwriting an single Element:
+
+```{r}
+x[8] <- 20
+
+x
+```
+
+### Adding more elements at end of x
+
+```{r}
+x <- append(x, c(10,113,55))
+x
+
+```
+
+```{r}
+# Create a vector with missing data
+x <- c(1, 2, 3, NaN, 5)
+
+x
+```
+
+```{r}
+# Remove nulls
+x <- x[!is.na(x)]
+# Check that it has worked
+print(x)
+```
+
+### Vector arithmetic
+
+Vectorized operations
+
+In R, vectorized operations are generally faster than loops
+
+Vectorization is a technique that allows you to perform operations on entire vectors at once, rather than looping through each element of the vector
+
+Vectorized operations are implemented in compiled code, which makes them much faster than loops that are executed at the R level
+
+```{r}
+x <- 1:5
+y <- 6:10
+
+x + y
+x - y
+x * y
+x / y
+```
+
+### Comparing 2 Vectors
+
+```{r}
+x < y
+```
+
+```{r}
+x <- c(4,6,8,3,3,9,3,5)
+y <- c(1,2,3)
+
+y %in% x
+x %in% y
+```
+
+this operation fails because ... ?
+
+```{r}
+x * y
+```
+
+## Mixing Objects
+
+#### Important to understand that this is can be a source of errors when datatype is wrongly typed
+
+```{r}
+y <- c(1.7, "a")   ## character
+y
+y <- c(TRUE, 2)    ## numeric
+y
+y <- c("a", TRUE)  ## character
+y
+```
+
+## Explicit Coercion
+
+#### Sometimes, it is necessary to convert one data type into another. For instance, converting the string "1" into the numerical value 1, and vice versa, is a straightforward operation.
+
+```{r}
+x <- 0:6
+x
+class(x)
+as.numeric(x)
+as.logical(x)
+as.character(x)
+
+```
+
+#### In this case R does not know how to convert a character "a" into numeric resp. logical or complex value
+
+```{r}
+x <- c("a", "b", "c")
+as.numeric(x)
+as.logical(x)
+as.complex(x)
+```
+
+## Matrices
+
+#### Matrices are vectors with a dimension attribute.
+
+```{r}
+m <- matrix(nrow = 2, ncol = 3) 
+
+m
+
+dim(m)
+
+attributes(m)
+```
+
+#### Matrices are constructed *column-wise*, so entries can be thought of starting in the "upper left" corner and running down the columns.
+
+```{r}
+m <- matrix(1:6, nrow = 2, ncol = 3) 
+m
+```
+
+#### Matrices can also be created directly from vectors by adding a dimension attribute.
+
+```{r}
+m <- 1:10 
+m
+
+dim(m) <- c(2, 5)
+m
+```
+
+#### Matrices can be created by *column-binding* or *row-binding* with the `cbind()` and `rbind()` functions.
+
+```{r}
+x <- 1:3
+y <- 10:12
+cbind(x, y)
+
+rbind(x, y) 
+
+```
+
+## Lists
+
+#### are a special type of vector that can contain elements of different classes. Lists are a very important data type in R (like Dictionary in Python)
+
+Lists can be explicitly created using the `list()` function, which takes an arbitrary number of arguments.
+
+```{r}
+x <- list(1, "a", TRUE, 1 + 4i, c(1,2,3)) 
+x
+```
+
+```{r}
+names(x) <- c("numeric", "string", "logical", "complex", "vector")
+
+x
+```
+
+## **Factors**
+
+are used to represent categorical data and can be un-ordered or ordered. One can think of a factor as an integer vector where each integer has a *label*. Factors are important in statistical modeling and are treated specially by modelling functions like `lm()` and `glm()`.
+
+```{r}
+x <- factor(c("yes", "yes", "no", "yes", "no"))
+x
+```
+
+```{r}
+table(x) 
+
+```
+
+```{r}
+levels(x)
+```
+
+```{r}
+my_conditions <- levels(x)
+
+my_conditions[1]
+```
+
+### The **order** of the levels of a factor can be set using the `levels` argument to `factor()`. This can be important in linear modelling because the first level is used as the baseline level.
+
+```{r}
+x <- factor(c("no", "no", "no", "yes", "no", "yes", "no", "yes"), levels = c("yes", "no"))
+x
+```
+
+### R objects can have **names**, which is very useful for writing readable code and self-describing objects. Here is an example of assigning names to an integer vector.
+
+```{r}
+x <- 10:13
+
+x
+
+names(x) <- c("New York", "Seattle", "Los Angeles") 
+x
+names(x)
+
+x[1]
+x["New York"]
+```
+
