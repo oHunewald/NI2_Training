@@ -1,0 +1,220 @@
+### Matrices can have both column and row names.
+
+```{r}
+m <- matrix(1:4, nrow = 2, ncol = 2)
+m
+dimnames(m) <- list(c("a", "b"), c("c", "d")) 
+m
+```
+
+```{r}
+# the comma separates row and columns
+# without any indexing before of after the comma, the outpout would be:
+# ALL rows and ALL columns
+m[,]
+```
+
+```{r}
+m[1, ] # First Row
+```
+
+```{r}
+m[, 1] # First Column
+```
+
+```{r}
+m["a","c"] # Row a, Column c
+```
+
+### Column names and row names can be set separately using the `colnames()` and `rownames()` functions.
+
+```{r}
+colnames(m) <- c("h", "f")
+rownames(m) <- c("x", "z")
+m
+```
+
+## Data Frames
+
+### Most often Data Frames are created while importing your data files using function like read.csv (base-r) or read_csv (tibble).
+
+### But Data Frames can also be created manually in different ways:
+
+```{r}
+  x <- data.frame(foo = 1:4, bar = c(T, T, F, F)) 
+  x
+
+```
+
+```{r}
+# Creating individual lists
+# Remember: each vector must be a unique data-type
+name <- c("Alice", "Bob", "Charlie")
+age <- c(25, 30, 22)
+score <- c(88, 75, 92)
+
+# Combining lists to create a DataFrame
+data <- data.frame(Name = name, Age = age, Score = score)
+
+# Displaying the DataFrame
+print(data)
+
+```
+
+#### Create a Data Frame by converting it from another similar structure e.g. Matrix:
+
+Often done to process some numerical operations first (matrix):
+
+```{r}
+m <- matrix(1:6, nrow = 2, ncol = 3) 
+m
+```
+
+```{r}
+my_df <- as.data.frame(m)
+
+my_df
+```
+
+```{r}
+colnames(my_df) <- c("col1","col2","col3")
+my_df
+```
+
+## Simulate a gene expression Data-Frame
+
+```{r}
+# Set a seed for reproducibility (optional)
+set.seed(42)
+
+# Define the number of genes and samples
+num_genes <- 100  # Number of genes
+num_samples <- 10  # Number of samples
+
+# Create the dataframe with random expression values
+gene_names <- paste0("Gene_", 1:num_genes)
+expression_data <- data.frame(
+  Gene = gene_names,
+  sample = matrix(rnorm(num_genes * num_samples, mean = 50, sd = 10), nrow = num_genes)
+)
+
+# View the dataframe
+print(expression_data)
+
+```
+
+```{r}
+nrow(expression_data)
+ncol(expression_data)
+```
+
+```{r}
+rownames(expression_data) <- expression_data$Gene
+
+expression_data$Gene <- NULL
+
+head(expression_data)
+```
+
+```{r}
+my_mtrx <- as.matrix(expression_data)
+head(my_mtrx)
+```
+
+```{r}
+expression_data
+```
+
+```{r}
+library(pheatmap)
+
+pheatmap(expression_data[, 2:10])
+```
+
+```{r}
+head(expression_data) # head is to show the beginning of a dataframe
+
+tail(expression_data) # shows the ending of a dataframe
+```
+
+There are various functions that can give you an overview of the data that is in a data frame, which may or may not be useful depending on what type of data you have:
+
+| Function         | Returns                                    |
+|:-----------------|:-------------------------------------------|
+| `colnames(df)`   | The column names of a data frame           |
+| `rownames(df)`   | The row names of a data frame              |
+| `ncol(df)`       | Number of columns                          |
+| `nrow(df)`       | Number of rows                             |
+| `describeBy(df)` | Descriptive statistics                     |
+| `summary(df)`    | Results of various model fitting functions |
+
+```{r}
+expression_data[1:5 , "sample.1"]
+
+```
+
+```{r}
+summary(expression_data[,"sample.1"])
+```
+
+```{r}
+# an column can be easily removed:
+# remove the sample.1
+expression_data$sample.1 <- NULL
+
+head(expression_data)
+```
+
+```{r}
+
+rownames(expression_data) <- expression_data$Gene
+
+expression_data$Gene <- NULL
+
+pheatmap(expression_data)
+```
+
+```{r}
+
+
+# Download the data from GitHub and save it as 'data.csv' in your working directory
+download.file("https://raw.githubusercontent.com/oHunewald/NI2_Training/main/part2/expr_2.csv", "expr_2.csv")
+
+# Read the downloaded CSV file into a dataframe
+data <- read.csv("expr_2.csv", sep = ";", dec=",")
+
+# View the dataframe
+head(data)
+
+# another way how to peek into a large dataset with many rows and columns is by sub-setting to 
+# less rows and columns, here for example, we limit the output to 5 rows and 5 columns
+data[1:5,1:5]
+```
+
+```{r}
+
+# check the dimension of the dataset (output is number of rows and number of columns)
+dim(data)
+```
+
+```{r}
+# using a heatmap function to visualize the expression data
+pheatmap(data)
+```
+
+As the ranges of marker intensities can vary substantially, we apply another transformation that scales expression of all markers to values between 0 and 1 using low (e.g. 1%) and high (e.g. 99%) percentiles as the boundary.
+
+```{r}
+# if needed install the library first
+# install.packages("matrixStats")
+
+library(matrixStats)
+expr <- as.matrix(data)
+rng <- colQuantiles(expr, probs = c(0.01, 0.99))
+expr01 <- t((t(expr) - rng[, 1]) / (rng[, 2] - rng[, 1]))
+expr01[expr01 < 0] <- 0
+expr01[expr01 > 1] <- 1
+```
+
+```{r}
+pheatmap(expr01)
