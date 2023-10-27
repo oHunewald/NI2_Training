@@ -1,0 +1,97 @@
+## **Exercise 1: Vectors**
+
+```{r}
+
+
+
+```
+
+## **Exercise 2: Data Frames**
+
+```{r}
+# Exercise 2: Data Frames
+# Remember: Dataframes can be created from vectors
+
+
+
+```
+
+## **Exercise 3: Vector Subsetting**
+
+```{r}
+# Exercise 3: Vector Subsetting
+
+```
+
+## **Exercise 4: Data Frame Subsetting**
+
+```{r}
+# Exercise 4: Data Frame Subsetting
+
+```
+
+## **Exercise 5: Conditional Statements**
+
+```{r}
+# Exercise 5: Conditional Statements
+
+
+```
+
+## **Exercise 6: Converting a Column to a Factor**
+
+```{r}
+# Exercise 8: Converting a Column to a Factor
+
+
+```
+
+## Exercise 7: Filtering Gene expression data
+
+Use the pre-defined code for generate artificial gene expression data and follow the instructions within the code. Fill in any missing code:
+
+```{r}
+# Set a random seed for reproducibility
+set.seed(123)
+
+# Create an artificial gene expression matrix with 10 genes and 5 samples
+genes <- paste("Gene", 1:10, sep="")
+samples <- paste("Sample", 1:5, sep="")
+gene_expression <- matrix(rnorm(50, mean = 5, sd = 2), nrow = 10, ncol = 5)
+
+colnames(gene_expression) <- # fill in the missing code
+rownames(gene_expression) <- # fill in the missing code
+
+# Print the gene expression matrix
+
+
+# Calculate the mean expression for each gene
+gene_means <- rowMeans() # fill in the missing code
+
+# Calculate the total expression for each sample
+sample_totals <- colSums() # fill in the missing code
+
+# Find the gene with the highest mean expression
+# the 'which' function return the indexes for logical vector
+# which
+# which.max
+# which.min
+# use the help function '?which' or '?which.max' to know more
+max_mean_gene <- # fill in the missing code
+
+# Find the sample with the highest total expression
+max_total_sample <- # fill in the missing code
+
+# Print the results
+cat("Mean Expression for Each Gene:\n")
+print() # fill in the missing code
+
+cat("\nTotal Expression for Each Sample:\n")
+print() # fill in the missing code
+
+# fill in the missing code
+cat("\nGene with the Highest Mean Expression:", , "\n")
+# fill in the missing code
+cat("Sample with the Highest Total Expression:", , "\n")
+
+```
